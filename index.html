@@ -55,6 +55,15 @@
         </div>
         <script>
             let speech = 1;
+            let lang = 1;
+            let indexES, indexEN;
+            voices = window.speechSynthesis.getVoices();
+            let utterance;
+            const options = window.speechSynthesis.getVoices().map((voice, index) => {
+                            console.log( `<option value="${index}">${voice.name}</option>`);
+                            if (voice.name == "Microsoft Zira Desktop - English (United States)") { indexEN = index };
+                            if (voice.name == "Microsoft Sabina Desktop - Spanish (Mexico)") { indexES = index };
+                        });
             let Mensajes = {
                 "Airpods" :
                 {
@@ -67,9 +76,23 @@
 
             function Messages(msg) {
                 speechSynthesis.cancel();
-                if (speech == 1) {
-                    speech.lang = 'es-MX'
-                    speechSynthesis.speak(new SpeechSynthesisUtterance(msg.voz));
+                if (speech == 1 && lang == 1) {                     
+                        speech.lang = 'es-MX';
+                        utterance = new SpeechSynthesisUtterance(msg.voz);
+                        utterance.voice= voices[indexES];
+                        speechSynthesis.speak(utterance);
+                }
+                if (speech == 1 && lang == 0) {
+                        speech.lang = 'en-US';
+                        utterance = new SpeechSynthesisUtterance(msg.voice);
+                        utterance.voice= voices[indexEN];
+                        speechSynthesis.speak(utterance);
+                }
+                if (speech == 0 && lang == 1) {
+                        
+                }
+                if (speech == 0 && lang == 0) {
+                        
                 }
             }
         </script>
